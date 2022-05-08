@@ -17,7 +17,7 @@ export async function getInfo(id: string) {
   };
 }
 
-export function getAudioStream<ReadableStream>(id: string) {
+export function getAudioStream<ReadableStream>(id: string | string[]) {
   return ytdl(id, {
     quality: "highestaudio",
     filter: "audioonly",
