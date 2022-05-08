@@ -1,56 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
-import Track from "../../store/types/track";
 import useActions from "../../hooks/useActions";
 import Loader from "../ui/Loader";
+import clsx from "clsx";
+import useTrackInfo from "../../hooks/useTrackInfo";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 interface TrackItemProps {
   id: string;
 }
 const TrackItem = (props: TrackItemProps) => {
   const { id } = props;
-
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-  const [track, setTrack] = useState<Track | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch(`${backendUrl}/audio/${id}/info`).then((res) =>
-      res.json().then((data) => {
-        if (data.statusCode === 410) {
-          setError("410");
-          return;
-        }
-        const { title, author, thumbnails, lengthSeconds, video_url } =
-          data.videoDetails;
-        const track: Track = {
-          id,
-          title,
-          video_url,
-          author: author.name,
-          channel_url: `https://www.youtube.com/channel/${author.id}`,
-          thumbnail: thumbnails[thumbnails.length - 1].url,
-          duration: lengthSeconds,
-        };
-        setTrack(track);
-      })
-    );
-  }, []);
-
+  const { track, isLoading, isError } = useTrackInfo(id);
   const { setCurrentTrack } = useActions();
+
+  const currentTrack = useTypedSelector((state) => state.player.currentTrack);
 
   function handleClick() {
     if (track) setCurrentTrack(track);
   }
 
-  if (error === "410")
+  if (isError)
     return (
       <li className="flex h-24 gap-2 rounded border-yt-500 bg-yt-500 bg-opacity-10 p-2 text-yt-200">
-        <h1 className="text-white">NO ACCESS</h1>
+        <h1 className="text-white">{isError}</h1>
       </li>
     );
-  if (!track)
+  if (isLoading)
     return (
       <li className="flex h-24 gap-2 rounded border-yt-500 bg-yt-500 bg-opacity-10 p-2 text-yt-200">
         <Loader />
@@ -58,7 +34,10 @@ const TrackItem = (props: TrackItemProps) => {
     );
   return (
     <li
-      className="flex h-28 gap-2 rounded border-yt-500 bg-yt-500 bg-opacity-10 p-2 text-yt-200 hover:cursor-pointer"
+      className={clsx(
+        "flex h-28 gap-2 rounded border-yt-500 bg-yt-500 bg-opacity-10 p-2 text-yt-200 hover:cursor-pointer",
+        currentTrack === track && "bg-white"
+      )}
       onClick={handleClick}
     >
       <div className="z-10 w-24">

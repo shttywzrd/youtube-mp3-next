@@ -57,7 +57,7 @@ const Player = () => {
     if (currentTrack === null) return;
 
     if (player) {
-      player.audioElement.src = `http://localhost:5000/audio/${currentTrack.id}/download`;
+      player.audioElement.src = `/api/audio/${currentTrack.id}/download`;
       if (isPaused) play();
       else player.audioElement.play();
     }
