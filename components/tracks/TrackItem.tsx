@@ -39,7 +39,7 @@ const TrackItem = (props: TrackItemProps) => {
   const { setCurrentTrack } = useActions();
 
   function handleClick() {
-    setCurrentTrack(track);
+    if (track) setCurrentTrack(track);
   }
 
   if (error === "410")
