@@ -1,0 +1,20 @@
+.range {
+    &::-moz-range-thumb {
+      width: 0;
+      height: 0;
+      opacity: 0;
+     }
+    &::-webkit-slider-thumb {
+    width: 0;
+    height: 0;
+    opacity: 0;
+     }
+    &::-moz-range-progress {
+    background: white;
+    border-radius: 2px;
+    }
+  &::-moz-range-track {
+    background: gray;
+    border-radius: 4px;
+  }
+}

@@ -1,8 +1,12 @@
 import React from "react";
 
-const Logo = () => {
+interface LogoProps {
+  className?: string;
+}
+
+const Logo = ({ className }: LogoProps) => {
   return (
-    <div className="h-[20px] w-[90px] text-yt-secondary cursor-pointer">
+    <div className={className}>
       <svg
         viewBox="0 0 90 20"
         preserveAspectRatio="xMidYMid meet"

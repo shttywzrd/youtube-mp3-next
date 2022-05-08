@@ -1,13 +1,14 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Layout from "../components/layout/Layout";
+import { wrapper } from "../store";
+import Index from "../components/layout";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
+    <Index>
       <Component {...pageProps} />
-    </Layout>
+    </Index>
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(App);
