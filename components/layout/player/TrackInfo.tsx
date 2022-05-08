@@ -6,11 +6,13 @@ import { HiDownload, HiHeart, HiOutlineHeart } from "react-icons/hi";
 const TrackInfo = () => {
   const track = useTypedSelector((state) => state.player.currentTrack);
 
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
   function handleLike() {}
 
   function handleDownload() {
     if (track) {
-      fetch(`http://localhost:5000/audio/${track.id}/download`)
+      fetch(`${backendUrl}/audio/${track.id}/download`)
         .then((res) => res.blob())
         .then((blob) => URL.createObjectURL(blob))
         .then((url) => {

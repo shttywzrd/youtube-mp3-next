@@ -10,11 +10,13 @@ interface TrackItemProps {
 const TrackItem = (props: TrackItemProps) => {
   const { id } = props;
 
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
   const [track, setTrack] = useState<Track | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/audio/${id}/info`).then((res) =>
+    fetch(`${backendUrl}/audio/${id}/info`).then((res) =>
       res.json().then((data) => {
         if (data.statusCode === 410) {
           setError("410");
